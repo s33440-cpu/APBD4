@@ -10,24 +10,30 @@ namespace LegacyRenewalApp
 {
     public class SubscriptionRenewalService
     {
-        public readonly ICustomerRepository _customerRepository;
-        public readonly ISubscriptionPlanRepository _planRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly ISubscriptionPlanRepository _planRepository;
         private readonly IRenewalServiceValidator _validator;
 
-        
+        private readonly IBillingGateway _billingGateway;
 
         public SubscriptionRenewalService()
-            : this(new CustomerRepository(), new SubscriptionPlanRepository(), new RenewalServiceValidator())
+            : this(
+                new CustomerRepository(), 
+                new SubscriptionPlanRepository(), 
+                new RenewalServiceValidator(),
+                new BillingGateway())
             { }
 
         public SubscriptionRenewalService(
             ICustomerRepository customerRepository,
             ISubscriptionPlanRepository planRepository,
-            IRenewalServiceValidator validator)
+            IRenewalServiceValidator validator,
+            IBillingGateway billingGateway)
         {
             _customerRepository = customerRepository;
             _planRepository = planRepository;
             _validator = validator;
+            _billingGateway = billingGateway;
         }
         public RenewalInvoice CreateRenewalInvoice(
             int customerId,

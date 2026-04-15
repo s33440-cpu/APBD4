@@ -1,5 +1,4 @@
-﻿using LegacyRenewalApp.Interfaces;
-using LegacyRenewalApp.Helper;
+using LegacyRenewalApp.Interfaces;
 using LegacyRenewalApp.Models;
 using System;
 using System.Collections.Generic;
@@ -21,5 +20,4 @@ namespace LegacyRenewalApp.Helper
             LegacyBillingGateway.SendEmail(email, subject, body);
         }
     }
-
 }
