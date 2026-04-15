@@ -1,9 +1,10 @@
-using LegacyRenewalApp.Helper;
+ using LegacyRenewalApp.Helper;
 using LegacyRenewalApp.Interfaces;
 using LegacyRenewalApp.Models;
 using LegacyRenewalApp.Repositories;
 using System;
 using System.ComponentModel.DataAnnotations;
+
 
 namespace LegacyRenewalApp
 {
@@ -12,6 +13,8 @@ namespace LegacyRenewalApp
         public readonly ICustomerRepository _customerRepository;
         public readonly ISubscriptionPlanRepository _planRepository;
         private readonly IRenewalServiceValidator _validator;
+
+        
 
         public SubscriptionRenewalService()
             : this(new CustomerRepository(), new SubscriptionPlanRepository(), new RenewalServiceValidator())
@@ -133,7 +136,7 @@ namespace LegacyRenewalApp
                 notes += "premium support included; ";
             }
 
-            decimal paymentFee = 0m;
+            decimal paymentFee = 0m; 
             if (normalizedPaymentMethod == "CARD")
             {
                 paymentFee = (subtotalAfterDiscount + supportFee) * 0.02m;
