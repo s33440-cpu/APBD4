@@ -1,14 +1,13 @@
-﻿using System;
+﻿using LegacyRenewalApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LegacyRenewalApp;
-using LegacyRenewalApp.Models;
 
-namespace LegacyRenewalApp.Interfaces
+namespace LegacyRenewalApp.Interfaces.Repository
 {
-    public interface ICustomerRepository 
+    public interface ICustomerRepository
     {
         Customer GetById(int customerId);
     }

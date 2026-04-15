@@ -2,8 +2,9 @@ using LegacyRenewalApp.Enums;
 using LegacyRenewalApp.Helper;
 using LegacyRenewalApp.Interfaces;
 using LegacyRenewalApp.Interfaces.Calculator;
+using LegacyRenewalApp.Interfaces.Repository;
 using LegacyRenewalApp.Models;
-using LegacyRenewalApp.Repositories;
+using LegacyRenewalApp.Repository;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -55,7 +56,7 @@ namespace LegacyRenewalApp
             string normalizedPlanCode = planCode.Trim().ToUpperInvariant();
             string normalizedPaymentMethod = paymentMethod.Trim().ToUpperInvariant();
 
-            PaymentMethod paymentEnum = ParseEnum<PaymentMethod>(normalizedPaymentMethod, nameof(paymentMethod));
+            PaymentMethod paymentMethodEnum = ParseEnum<PaymentMethod>(normalizedPaymentMethod, nameof(paymentMethod));
 
             var customer = _customerRepository.GetById(customerId);
             var plan = _planRepository.GetByCode(normalizedPlanCode);
@@ -65,22 +66,7 @@ namespace LegacyRenewalApp
                                                             seatCount, useLoyaltyPoints,
                                                             includePremiumSupport);
 
-            var invoice = new RenewalInvoice
-            {
-                InvoiceNumber = $"INV-{DateTime.UtcNow:yyyyMMdd}-{customerId}-{normalizedPlanCode}",
-                CustomerName = customer.FullName,
-                PlanCode = normalizedPlanCode,
-                PaymentMethod = normalizedPaymentMethod,
-                SeatCount = seatCount,
-                BaseAmount = Math.Round(baseAmount, 2, MidpointRounding.AwayFromZero),
-                DiscountAmount = Math.Round(discountAmount, 2, MidpointRounding.AwayFromZero),
-                SupportFee = Math.Round(supportFee, 2, MidpointRounding.AwayFromZero),
-                PaymentFee = Math.Round(paymentFee, 2, MidpointRounding.AwayFromZero),
-                TaxAmount = Math.Round(taxAmount, 2, MidpointRounding.AwayFromZero),
-                FinalAmount = Math.Round(finalAmount, 2, MidpointRounding.AwayFromZero),
-                Notes = notes.Trim(),
-                GeneratedAt = DateTime.UtcNow
-            };
+            var invoice = _invoiceGenerator.GenerateInvoice(customer, details, normalizedPlanCode, paymentMethodEnum, seatCount);
 
             _billingGateway.SaveInvoice(invoice);
 

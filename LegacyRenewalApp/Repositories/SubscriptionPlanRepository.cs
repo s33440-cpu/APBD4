@@ -1,18 +1,19 @@
-using LegacyRenewalApp.Interfaces;
+using LegacyRenewalApp.Enums;
+using LegacyRenewalApp.Interfaces.Repository;
 using LegacyRenewalApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace LegacyRenewalApp.Repositories
+namespace LegacyRenewalApp.Repository
 {
     public class SubscriptionPlanRepository : ISubscriptionPlanRepository
     {
         public static readonly Dictionary<string, SubscriptionPlan> Database = new Dictionary<string, SubscriptionPlan>
         {
-            { "START", new SubscriptionPlan { Code = "START", Name = "Start", MonthlyPricePerSeat = 49m, SetupFee = 120m, IsEducationEligible = false } },
-            { "PRO", new SubscriptionPlan { Code = "PRO", Name = "Professional", MonthlyPricePerSeat = 89m, SetupFee = 180m, IsEducationEligible = true } },
-            { "ENTERPRISE", new SubscriptionPlan { Code = "ENTERPRISE", Name = "Enterprise", MonthlyPricePerSeat = 149m, SetupFee = 300m, IsEducationEligible = false } }
+            { "START", new SubscriptionPlan { Code=PlanCode.Start, Name = "Start", MonthlyPricePerSeat = 49m, SetupFee = 120m, IsEducationEligible = false } },
+            { "PRO", new SubscriptionPlan { Code = PlanCode.Pro, Name = "Professional", MonthlyPricePerSeat = 89m, SetupFee = 180m, IsEducationEligible = true } },
+            { "ENTERPRISE", new SubscriptionPlan { Code = PlanCode.Enterprise, Name = "Enterprise", MonthlyPricePerSeat = 149m, SetupFee = 300m, IsEducationEligible = false } }
         };
 
         public SubscriptionPlan GetByCode(string code)
