@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Enums\" />
+    <Compile Include="Interfaces\IBillingGateway.cs" />
   </ItemGroup>
 
 </Project>
