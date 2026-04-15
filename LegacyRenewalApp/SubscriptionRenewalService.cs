@@ -1,5 +1,6 @@
 using LegacyRenewalApp.Enums;
 using LegacyRenewalApp.Helper;
+using LegacyRenewalApp.Helper.Calculator;
 using LegacyRenewalApp.Interfaces;
 using LegacyRenewalApp.Interfaces.Calculator;
 using LegacyRenewalApp.Interfaces.Repository;
@@ -27,7 +28,8 @@ namespace LegacyRenewalApp
                 new SubscriptionPlanRepository(), 
                 new RenewalServiceValidator(),
                 new BillingGateway(),
-                new InvoiceGenerator())
+                new InvoiceGenerator(),
+                new InvoiceCalculator())
             { }
 
         public SubscriptionRenewalService(
@@ -35,13 +37,15 @@ namespace LegacyRenewalApp
             ISubscriptionPlanRepository planRepository,
             IRenewalServiceValidator validator,
             IBillingGateway billingGateway,
-            IInvoiceGenerator invoiceGenerator)
+            IInvoiceGenerator invoiceGenerator,
+            IInvoiceCalculator calculator)
         {
             _customerRepository = customerRepository;
             _planRepository = planRepository;
             _validator = validator;
             _billingGateway = billingGateway;
             _invoiceGenerator = invoiceGenerator;
+            _calculator = calculator;
         }
         public RenewalInvoice CreateRenewalInvoice(
             int customerId,
@@ -83,13 +87,13 @@ namespace LegacyRenewalApp
             return invoice;
         }
             private T ParseEnum<T>(string value, string paramName) where T : struct, Enum
-        {
+            {
             if (!Enum.TryParse<T>(value, true, out var result))
             {
                 throw new ArgumentException($"Invalid {paramName}: {value}");
             }
             return result;
-        }
+            }
         
     }
 }
